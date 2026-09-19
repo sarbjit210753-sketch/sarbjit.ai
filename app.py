@@ -22,7 +22,7 @@ safety_settings = [
     {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
 ]
 
-MODEL_NAME = 'gemini-1.5-flash'
+MODEL_NAME = 'gemini-3.5-flash'
 chat_history = []
 
 @app.route('/')
