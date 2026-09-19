@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sarbjit AI 🚀 Pro Studio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(10, 10, 10, 0.75), rgba(0, 0, 0, 0.95)), url('/static/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #00ffcc;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        header {
+            background: rgba(15, 20, 30, 0.95);
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+
+        header span {
+            font-size: 15px;
+            font-weight: bold;
+            color: #00ffcc;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .model-selector {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+            font-weight: bold;
+        }
+
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            max-width: 90%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .user-message {
+            background: rgba(31, 111, 235, 0.85);
+            color: #ffffff;
+            align-self: flex-end;
+            border: 1px solid #1f6feb;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bot-message {
+            background: rgba(15, 20, 30, 0.92);
+            color: #00ffcc;
+            align-self: flex-start;
+            border: 1px solid rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.15);
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0, 255, 204, 0.2);
+        }
+
+        .action-icon-btn {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid rgba(0, 255, 204, 0.4);
+            color: #00ffcc;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .action-icon-btn:hover { background: #00ffcc; color: #000; }
+
+        .plus-menu {
+            position: absolute;
+            bottom: 65px;
+            left: 10px;
+            background: rgba(15, 20, 30, 0.98);
+            border: 1px solid #00ffcc;
+            border-radius: 8px;
+            display: none;
+            flex-direction: column;
+            width: 170px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .plus-menu button {
+            background: none;
+            border: none;
+            color: #00ffcc;
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .plus-menu button:hover { background: rgba(0, 255, 204, 0.15); color: #fff; }
+
+        #input-container {
+            display: flex;
+            padding: 10px 12px;
+            background: rgba(15, 20, 30, 0.98);
+            border-top: 2px solid #00ffcc;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #00ffcc;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .tool-btn, #send-button {
+            background-color: #00ffcc;
+            color: #000;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tool-btn:hover, #send-button:hover { background-color: #00b386; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span>Sarbjit AI 🚀 Studio</span>
+        <select class="model-selector">
+            <option>Gemini Flash-Lite</option>
+            <option>Sarbjit Pro Studio</option>
+        </select>
+    </header>
+
+    <div id="chat-container">
+        <div class="message bot-message">
+            Menu mere veer Sarbjit Singh ne banaya aa! Dss veere, ki help chahidi hai? 😎🔥
+            <div class="msg-actions">
+                <button class="action-icon-btn" onclick="copyWholeMessage(this)">📋 Copy</button>
+                <button class="action-icon-btn" onclick="speakText(this)">🔊 Listen</button>
+                <button class="action-icon-btn" onclick="reactMsg(this, 'like')">👍</button>
+                <button class="action-icon-btn" onclick="reactMsg(this, 'dislike')">👎</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="plus-menu" id="plusMenu">
+        <button onclick="triggerFileUpload('image/*')">🖼️ Photo / Gallery</button>
+        <button onclick="triggerFileUpload('.pdf,.txt')">📄 File / Code</button>
+    </div>
+
+    <div id="input-container">
+        <input type="file" id="hidden-file-input" style="display: none;" onchange="handleFileSelect(event)">
+        <button class="tool-btn" onclick="togglePlusMenu()">＋</button>
+        <input type="text" id="message-input" placeholder="Type here..." onkeypress="handleKeyPress(event)">
+        <button id="send-button" onclick="sendMessage()">➤</button>
+    </div>
+
+    <script>
+        let uploadedFileData = null;
+        let uploadedFileType = 'image';
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        function togglePlusMenu() {
+            const menu = document.getElementById('plusMenu');
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function triggerFileUpload(acceptType) {
+            const input = document.getElementById('hidden-file-input');
+            input.accept = acceptType;
+            input.click();
+            togglePlusMenu();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            uploadedFileType = file.type.includes('pdf') ? 'pdf' : 'image';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedFileData = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function speakText(button) {
+            const messageBox = button.closest('.message');
+            let clone = messageBox.cloneNode(true);
+            let actions = clone.querySelector('.msg-actions');
+            if (actions) actions.remove();
+            
+            const textToSpeak = clone.textContent.trim();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'pa-IN';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function copyWholeMessage(button) {
+            const messageBox = button.closest('.message');
+            let clone = messageBox.cloneNode(true);
+            let actions = clone.querySelector('.msg-actions');
+            if (actions) actions.remove();
+            navigator.clipboard.writeText(clone.textContent.trim()).then(() => {
+                button.textContent = '✅ Copied';
+                setTimeout(() => { button.textContent = '📋 Copy'; }, 2000);
+            });
+        }
+
+        function reactMsg(button, type) {
+            button.style.background = type === 'like' ? '#00ffcc' : '#da3633';
+            button.style.color = '#000';
+            setTimeout(() => { 
+                button.style.background = 'rgba(22, 27, 34, 0.8)'; 
+                button.style.color = '#00ffcc'; 
+            }, 1500);
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('message-input');
+            const chatContainer = document.getElementById('chat-container');
+            const messageText = inputField.value.trim();
+
+            if (!messageText && !uploadedFileData) return;
+            document.getElementById('plusMenu').style.display = 'none';
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.textContent = messageText || "[File Uploaded]";
+            chatContainer.appendChild(userDiv);
+
+            const payload = {
+                message: messageText,
+                file: uploadedFileData,
+                fileType: uploadedFileType
+            };
+
+            inputField.value = '';
+            uploadedFileData = null;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message';
+            typingDiv.textContent = 'Sarbjit AI is thinking...';
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                typingDiv.remove();
+
+                const botReplyText = data.reply || data.error || "No response received";
+                const botDiv = document.createElement('div');
+                botDiv.className = 'message bot-message';
+                botDiv.innerHTML = `${escapeHtml(botReplyText).replace(/\n/g, '<br>')}
+                    <div class="msg-actions">
+                        <button class="action-icon-btn" onclick="copyWholeMessage(this)">📋 Copy</button>
+                        <button class="action-icon-btn" onclick="speakText(this)">🔊 Listen</button>
+                        <button class="action-icon-btn" onclick="reactMsg(this, 'like')">👍</button>
+                        <button class="action-icon-btn" onclick="reactMsg(this, 'dislike')">👎</button>
+                    </div>
+                `;
+                chatContainer.appendChild(botDiv);
+            } catch (error) {
+                typingDiv.remove();
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'message bot-message';
+                errorDiv.textContent = '⚠️ Connection with server lost!';
+                chatContainer.appendChild(errorDiv);
+            }
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
+

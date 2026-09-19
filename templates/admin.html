@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarbjit AI - Secure Admin Panel</title>
+    <style>
+        body {
+            background: #0b0f19;
+            color: #00ffcc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .admin-card {
+            background: rgba(15, 20, 30, 0.95);
+            border: 2px solid #00ffcc;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.4);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #00ffcc;
+            text-transform: uppercase;
+        }
+        input[type="text"], input[type="password"], input[type="file"] {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ffcc;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            width: 100%;
+            margin-bottom: 15px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        button {
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #00b386;
+            color: #fff;
+            box-shadow: 0 0 20px #00ffcc;
+        }
+        .error-msg {
+            color: #ff4d4d;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .success-msg {
+            color: #2ea043;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            color: #00ffcc;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .logout-btn {
+            background: #da3633;
+            color: white;
+            margin-top: 10px;
+        }
+        .logout-btn:hover {
+            background: #b62324;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <h2>⚡ Admin Panel ⚡</h2>
+
+        {% if error %}
+            <div class="error-msg">{{ error }}</div>
+        {% endif %}
+
+        {% if success %}
+            <div class="success-msg">{{ success }}</div>
+        {% endif %}
+
+        {% if not logged_in %}
+            <!-- ਲੌਗਇਨ ਫਾਰਮ -->
+            <form action="/admin" method="POST">
+                <input type="text" name="username" placeholder="Username (admin)" required>
+                <input type="password" name="password" placeholder="Password (@@@@)" required>
+                <button type="submit">ਲੌਗਇਨ ਕਰੋ</button>
+            </form>
+        {% else %}
+            <!-- ਫ਼ੋਟੋ ਅਪਲੋਡ ਫਾਰਮ -->
+            <p style="margin-bottom: 15px; font-size: 14px;">ਗੈਲਰੀ ਵਿੱਚੋਂ ਨਵੀਂ ਫ਼ੋਟੋ ਚੁਣੋ:</p>
+            <form action="/admin" method="POST" enctype="multipart/form-data">
+                <input type="file" name="bg_image" accept="image/*" required>
+                <button type="submit">ਵਾਲਪੇਪਰ ਅੱਪਡੇਟ ਕਰੋ</button>
+            </form>
+            <a href="/logout"><button class="logout-btn">ਲੌਗ ਆਉਟ (Logout)</button></a>
+        {% endif %}
+
+        <a href="/" class="back-link">← ਚੈਟ ਵੱਲ ਵਾਪਸ ਜਾਓ</a>
+    </div>
+
+</body>
+</html>
+
